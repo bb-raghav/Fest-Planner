@@ -1,0 +1,8 @@
+Django
+djangorestframework
+openai
+python-dotenv
+pypdf
+pandas
+openpyxl
+scikit-learn
