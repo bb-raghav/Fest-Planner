@@ -25,7 +25,8 @@ SECRET_KEY = 'django-insecure-_n!d4rc)m88lef#f-#um@#-z2xd-x_by*&f63lq%r#ttf(=dqo
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# Local frontend and Django's built-in test client.
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "testserver"]
 
 
 # Application definition
@@ -43,7 +44,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
