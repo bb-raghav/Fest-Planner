@@ -1,6 +1,6 @@
 import json
 import os
-
+from pathlib import Path
 from dotenv import load_dotenv
 from openai import OpenAI
 from rest_framework.decorators import api_view
@@ -121,4 +121,58 @@ Do not invent activities or venues.
     return Response({
         "schedule": schedule,
         "validation": validation
+    })
+
+@api_view(["POST"])
+def upload_files(request):
+
+    data_dir = Path(__file__).resolve().parent.parent / "data"
+    data_dir.mkdir(exist_ok=True)
+
+    files = {
+        "guidelines": "fest_guidelines.pdf",
+        "venues": "venues.xlsx",
+        "activities": "activities.xlsx",
+    }
+
+    uploaded = []
+
+    for field, filename in files.items():
+
+        file = request.FILES.get(field)
+
+        if not file:
+            continue
+
+        extension = Path(file.name).suffix.lower()
+
+        if filename.endswith(".pdf") and extension != ".pdf":
+            return Response(
+                {"error": f"{field} must be a PDF file."},
+                status=400
+            )
+
+        if filename.endswith(".xlsx") and extension != ".xlsx":
+            return Response(
+                {"error": f"{field} must be an XLSX file."},
+                status=400
+            )
+
+        destination = data_dir / filename
+
+        with open(destination, "wb+") as output:
+            for chunk in file.chunks():
+                output.write(chunk)
+
+        uploaded.append(filename)
+
+    if not uploaded:
+        return Response(
+            {"error": "No valid files uploaded."},
+            status=400
+        )
+
+    return Response({
+        "message": "Files uploaded successfully.",
+        "files": uploaded
     })
