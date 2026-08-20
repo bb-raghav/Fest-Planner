@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>FestPilot — Intelligent Fest Planner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+ --black:#090a0a; --ink:#f7f7f4; --muted:#a4a4a0; --orange:#ff4a18;
+ --orange2:#ff7a20; --cream:#f1eee6; --card:#151716; --line:#292b29;
+}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;background:var(--black);color:var(--ink);font-family:"DM Sans",sans-serif}
+button,input{font:inherit} button{cursor:pointer}
+h1,h2,h3,.display{font-family:Manrope,sans-serif;letter-spacing:-.055em}
+a{color:inherit;text-decoration:none}
+::-webkit-scrollbar{width:7px}::-webkit-scrollbar-thumb{background:#333;border-radius:20px}
+.wrap{width:min(1180px,calc(100% - 36px));margin:auto}
+.topbar{height:74px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-weight:800;font-size:18px}.logo i{color:var(--orange);font-style:normal}
+.nav{display:flex;gap:26px;color:#a8a8a4;font-size:12px}.nav a:hover{color:#fff}
+.cta{border:0;background:#f4f1e9;color:#111;border-radius:999px;padding:10px 17px;font-size:11px;font-weight:800}
+.cta span{display:inline-grid;place-items:center;width:19px;height:19px;background:var(--orange);color:#fff;border-radius:50%;margin-left:7px}
+.hero{
+ min-height:690px;border-radius:0 0 44px 44px;position:relative;overflow:hidden;
+ background:
+ radial-gradient(circle at 57% 36%,rgba(255,112,32,.95),transparent 18%),
+ radial-gradient(circle at 28% 45%,rgba(255,55,10,.9),transparent 34%),
+ linear-gradient(135deg,#ff5b16 0%,#ff2f0d 47%,#26110d 100%);
+}
+.hero:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,54,13,.25),transparent 45%,rgba(0,0,0,.3))}
+.hero-inner{position:relative;min-height:616px;display:flex;align-items:center}
+.kicker{font-size:11px;text-transform:uppercase;letter-spacing:.18em;font-weight:700;margin-bottom:18px}
+.hero h1{font-size:clamp(58px,9vw,118px);line-height:.82;max-width:780px;margin:0}
+.hero h1 span{display:block;color:#fff}.hero h1 .accent{color:#17100d}
+.hero-copy{position:absolute;right:3%;top:42%;width:220px;font-size:13px;line-height:1.5;color:#f7d9cf}
+.hero-copy strong{display:block;font-size:18px;color:white;margin-bottom:8px}
+.orb{position:absolute;border-radius:50%;filter:blur(.3px);mix-blend-mode:screen;opacity:.8}
+.orb.one{width:330px;height:330px;right:16%;top:18%;background:radial-gradient(circle at 35% 30%,#ffdf99,#ff601b 35%,#5a0905 70%,transparent 71%);animation:float 7s ease-in-out infinite}
+.orb.two{width:160px;height:160px;right:34%;bottom:9%;background:radial-gradient(circle at 35% 30%,#ffcf9e,#ff4418 48%,transparent 70%);animation:float 5s ease-in-out infinite reverse}
+@keyframes float{50%{transform:translate3d(-15px,18px,0) scale(1.05)}}
+.hero-grid{position:absolute;inset:auto 0 32px;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;color:#ffd8c8;font-size:10px}
+.hero-grid div{padding-top:13px;border-top:1px solid rgba(255,255,255,.28)}
+.hero-grid b{display:block;color:#fff;margin-bottom:5px}
+.marquee{background:#151716;border-radius:0 0 32px 32px;padding:20px 0;overflow:hidden}
+.marquee-track{display:flex;gap:45px;white-space:nowrap;animation:marquee 20s linear infinite;color:#ddd;font-size:11px;text-transform:uppercase;letter-spacing:.12em}
+.marquee-track span:before{content:"✦";color:var(--orange);margin-right:14px}
+@keyframes marquee{to{transform:translateX(-40%)}}
+
+.section{padding:120px 0}
+.section-head{display:flex;justify-content:space-between;gap:50px;align-items:end;margin-bottom:45px}
+.eyebrow{color:var(--orange);font-size:11px;text-transform:uppercase;letter-spacing:.18em;font-weight:800}
+.section h2{font-size:clamp(42px,6vw,78px);line-height:.9;margin:12px 0 0;max-width:690px}
+.section-intro{max-width:320px;color:#9b9c98;font-size:13px;line-height:1.6}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.feature{
+ min-height:360px;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:26px;position:relative;overflow:hidden;
+ transition:.45s cubic-bezier(.2,.8,.2,1)
+}
+.feature:hover{transform:translateY(-10px) rotateX(2deg);border-color:#454744}
+.feature .num{font-size:11px;color:#777;margin-bottom:90px}.feature h3{font-size:27px;margin:0 0 12px}.feature p{color:#929490;font-size:12px;line-height:1.6;max-width:280px}
+.shape{position:absolute;width:180px;height:180px;border-radius:50%;right:-50px;top:-50px;background:radial-gradient(circle at 30% 30%,#ffb66e,#ff4a18 38%,#2c0d08 70%);opacity:.9}
+.feature:nth-child(2) .shape{background:conic-gradient(from 90deg,#ff4a18,#ffb66e,#32110b,#ff4a18)}
+.feature:nth-child(3) .shape{border-radius:30%;transform:rotate(35deg);background:linear-gradient(135deg,#ffb66e,#ff4a18 45%,#240c08)}
+.dark-panel{background:#101211;border-radius:34px;padding:60px;overflow:hidden}
+.split{display:grid;grid-template-columns:1.15fr .85fr;gap:55px;align-items:center}
+.bigline{font-size:clamp(44px,6vw,74px);line-height:.93;margin:12px 0 28px}
+.bigline em{font-style:normal;color:var(--orange)}
+.mini-list{display:grid;gap:13px}.mini{display:flex;gap:15px;padding:17px 0;border-bottom:1px solid #292b29;font-size:12px;color:#b9bab5}.mini b{color:#fff;min-width:28px}
+.dashboard{
+ background:var(--cream);color:#151615;border-radius:34px;padding:28px;min-height:470px;transform:rotate(2deg);box-shadow:0 35px 90px rgba(0,0,0,.35)
+}
+.dash-top{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #d8d5cc;padding-bottom:16px}
+.dash-title{font-family:Manrope;font-size:16px;font-weight:800}.pill{font-size:9px;background:#171817;color:#fff;border-radius:999px;padding:7px 10px}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:18px 0}.kpi{background:#fff;border-radius:14px;padding:14px}.kpi small{color:#777;font-size:9px}.kpi strong{display:block;font:800 24px Manrope;margin-top:5px}
+.chart{height:145px;background:#fff;border-radius:14px;padding:16px;position:relative;overflow:hidden}
+.bars{height:100%;display:flex;align-items:end;gap:10px}.bar{flex:1;background:linear-gradient(#ff6a28,#ff3f14);border-radius:7px 7px 2px 2px}
+.timeline{margin-top:10px;background:#fff;border-radius:14px;padding:14px}.trow{display:grid;grid-template-columns:70px 1fr;gap:10px;margin:8px 0;align-items:center;font-size:8px;color:#777}.track{height:24px;background:#f0eee8;border-radius:7px;position:relative}.block{position:absolute;top:3px;bottom:3px;border-radius:5px;background:#171817;color:white;font-size:8px;padding:5px 7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.workflow{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#30322f;margin-top:45px;border:1px solid #30322f;border-radius:20px;overflow:hidden}
+.step{background:#111311;padding:28px;min-height:170px}.step .n{color:var(--orange);font-size:11px}.step h3{font-size:20px;margin:30px 0 8px}.step p{font-size:11px;color:#8e908c;line-height:1.5}
+.footer{padding:80px 0 110px;border-top:1px solid #222522}.footer h2{font-size:clamp(48px,8vw,100px);line-height:.85;margin:10px 0 30px}
+.taskbar{position:fixed;z-index:50;bottom:18px;left:50%;transform:translateX(-50%);background:rgba(16,17,16,.9);backdrop-filter:blur(16px);border:1px solid #343633;border-radius:999px;padding:6px;display:flex;gap:4px;box-shadow:0 18px 60px rgba(0,0,0,.45)}
+.taskbar button{border:0;background:transparent;color:#8e908b;padding:10px 14px;border-radius:999px;font-size:11px}.taskbar button.active,.taskbar button:hover{background:#f1eee6;color:#111}
+.page{display:none}.page.active{display:block;animation:pageIn .6s cubic-bezier(.2,.8,.2,1)}
+@keyframes pageIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@media(max-width:800px){
+ .nav{display:none}.topbar{height:64px}.hero{min-height:650px;border-radius:0 0 30px 30px}.hero h1{font-size:58px}.hero-copy{position:relative;right:auto;top:auto;margin-top:35px}.hero-inner{display:block;padding-top:80px}.orb.one{right:-15%;top:28%}.hero-grid{grid-template-columns:repeat(2,1fr);gap:15px}.grid3,.workflow,.split{grid-template-columns:1fr}.section{padding:75px 0}.section-head{display:block}.section-intro{margin-top:25px}.dark-panel{padding:28px}.dashboard{transform:none}.taskbar{max-width:94vw;overflow:auto}.taskbar button{padding:10px 11px}.taskbar button span{display:none}
+}
+</style>
+</head>
+<body>
+
+<div id="app">
+<!-- PAGE: OVERVIEW -->
+<section id="overview" class="page active">
+  <div class="hero">
+    <div class="wrap">
+      <header class="topbar">
+        <div class="logo">Fest<span>•</span>Pilot</div>
+        <nav class="nav">
+          <a href="#overview">Overview</a><a href="#planner">Planner</a><a href="#features">Features</a><a href="#workflow">How it works</a>
+        </nav>
+        <button class="cta" onclick="showPage('planner')">Open planner <span>↗</span></button>
+      </header>
+      <div class="hero-inner">
+        <div>
+          <div class="kicker">Intelligent college fest planning</div>
+          <h1><span>Build a</span><span class="accent">better fest.</span><span>without the</span><span>planning chaos.</span></h1>
+        </div>
+        <div class="orb one"></div><div class="orb two"></div>
+        <div class="hero-copy"><strong>Plan. Validate. Launch.</strong>Turn messy fest documents into a conflict-free, budget-aware event plan with AI assistance.</div>
+        <div class="hero-grid">
+          <div><b>01</b>Upload your inputs</div><div><b>02</b>Extract the rules</div><div><b>03</b>Build the schedule</div><div><b>04</b>Review & override</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="marquee"><div class="marquee-track"><span>venue matching</span><span>budget control</span><span>resource planning</span><span>constraint checking</span><span>AI recommendations</span><span>venue matching</span><span>budget control</span></div></div>
+
+  <div class="wrap section" id="features">
+    <div class="section-head"><div><div class="eyebrow">What the planner handles</div><h2>Less cross-checking.<br>More <em>creating.</em></h2></div><p class="section-intro">A single planning workspace for organizers who need to balance people, places, time, equipment and money.</p></div>
+    <div class="grid3">
+      <article class="feature"><div class="shape"></div><div class="num">01 / MATCHING</div><h3>Conflict-free scheduling</h3><p>Match activities to suitable venues using capacity, timing, equipment and availability constraints.</p></article>
+      <article class="feature"><div class="shape"></div><div class="num">02 / FINANCE</div><h3>Budget intelligence</h3><p>Track activity-level allocations, total spending and protected sponsorship funds without losing the big picture.</p></article>
+      <article class="feature"><div class="shape"></div><div class="num">03 / RESOURCES</div><h3>Resource visibility</h3><p>Surface likely needs such as microphones, projectors, seating and manpower from activity requirements.</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- PAGE: PLANNER -->
+<section id="planner" class="page">
+  <div class="wrap">
+    <header class="topbar"><div class="logo">Fest<span>•</span>Pilot</div><button class="cta" onclick="showPage('overview')">← Overview</button></header>
+    <div class="section">
+      <div class="section-head"><div><div class="eyebrow">Planner workspace</div><h2>See the plan.<br>Change the <em>plan.</em></h2></div><p class="section-intro">The interface is designed around review and human override — automation does the cross-checking, organizers keep control.</p></div>
+      <div class="dark-panel">
+        <div class="split">
+          <div>
+            <div class="eyebrow">Live planning board</div>
+            <div class="bigline">One view for <em>activities, venues</em> and constraints.</div>
+            <div class="mini-list">
+              <div class="mini"><b>01</b> Four activities matched to 4 available venues</div>
+              <div class="mini"><b>02</b> Timing overlaps checked before confirmation</div>
+              <div class="mini"><b>03</b> Total scheduled budget reaches 85,000 INR</div>
+              <div class="mini"><b>04</b> Manual overrides can be reviewed before publishing</div>
+            </div>
+          </div>
+          <div class="dashboard">
+            <div class="dash-top"><div class="dash-title">Fest plan / Live</div><div class="pill">6 checks passed</div></div>
+            <div class="kpis"><div class="kpi"><small>Activities</small><strong>04</strong></div><div class="kpi"><small>Venues</small><strong>04</strong></div><div class="kpi"><small>Budget</small><strong>85k</strong></div></div>
+            <div class="chart"><div class="bars"><i class="bar" style="height:42%"></i><i class="bar" style="height:78%"></i><i class="bar" style="height:58%"></i><i class="bar" style="height:92%"></i><i class="bar" style="height:67%"></i><i class="bar" style="height:80%"></i><i class="bar" style="height:52%"></i></div></div>
+            <div class="timeline">
+              <div class="trow"><b>Auditorium</b><div class="track"><span class="block" style="left:20%;width:20%">Dance Perf.</span></div></div>
+              <div class="trow"><b>Seminar</b><div class="track"><span class="block" style="left:20%;width:30%">Robotics</span></div></div>
+              <div class="trow"><b>Lab 1</b><div class="track"><span class="block" style="left:30%;width:10%">Quiz Comp.</span></div></div>
+              <div class="trow"><b>Ground</b><div class="track"><span class="block" style="left:60%;width:20%">Photography</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAGE: SYSTEM / WORKFLOW -->
+<section id="workflow" class="page">
+  <div class="wrap">
+    <header class="topbar"><div class="logo">Fest<span>•</span>Pilot</div><button class="cta" onclick="showPage('overview')">← Overview</button></header>
+    <div class="section">
+      <div class="section-head"><div><div class="eyebrow">Planning pipeline</div><h2>From rough files to a <em>ready plan.</em></h2></div><p class="section-intro">The backend can combine secure APIs, document extraction, retrieval, hard validation and persistent planning data.</p></div>
+      <div class="workflow">
+        <article class="step"><div class="n">01</div><h3>Ingest</h3><p>Accept PDFs, spreadsheets and activity lists through a secure upload layer.</p></article>
+        <article class="step"><div class="n">02</div><h3>Understand</h3><p>Use the AI pipeline and retrieval context to turn unstructured guidelines into structured planning inputs.</p></article>
+        <article class="step"><div class="n">03</div><h3>Validate</h3><p>Apply hard rules for venue conflicts, capacity, timing, equipment and budget limits.</p></article>
+        <article class="step"><div class="n">04</div><h3>Explain</h3><p>Return recommendations in plain language and let organizers adjust the final plan.</p></article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAGE: FEATURES -->
+<section id="featuresPage" class="page">
+  <div class="wrap">
+    <header class="topbar"><div class="logo">Fest<span>•</span>Pilot</div><button class="cta" onclick="showPage('overview')">← Overview</button></header>
+    <div class="section">
+      <div class="section-head"><div><div class="eyebrow">System capabilities</div><h2>The practical layer behind the <em>experience.</em></h2></div><p class="section-intro">Designed to make the complicated parts of fest planning visible, testable and editable.</p></div>
+      <div class="grid3">
+        <article class="feature"><div class="shape"></div><div class="num">01 / API</div><h3>Secure API infrastructure</h3><p>Endpoints for uploads, document processing, structured data and conversational planner queries.</p></article>
+        <article class="feature"><div class="shape"></div><div class="num">02 / RAG</div><h3>Guideline-aware AI</h3><p>Retrieval keeps recommendations grounded in the actual rules supplied by organizers.</p></article>
+        <article class="feature"><div class="shape"></div><div class="num">03 / DATA</div><h3>Persistent planning data</h3><p>Store sessions, structured spreadsheet information and document representations for repeatable planning.</p></article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap"><div class="eyebrow">FestPilot</div><h2>Make room for<br><em>the actual fest.</em></h2><p style="color:#777;max-width:430px;font-size:12px;line-height:1.6">A concept interface for intelligent college fest scheduling, budgeting and constraint management.</p></div>
+</footer>
+
+<nav class="taskbar">
+  <button class="active" onclick="showPage('overview')">Overview</button>
+  <button onclick="showPage('planner')">Planner</button>
+  <button onclick="showPage('featuresPage')">Capabilities</button>
+  <button onclick="showPage('workflow')">Pipeline</button>
+</nav>
+</div>
+
+<script>
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const el=document.getElementById(id); if(el) el.classList.add('active');
+  document.querySelectorAll('.taskbar button').forEach(b=>b.classList.remove('active'));
+  const map={overview:0,planner:1,featuresPage:2,workflow:3};
+  const idx=map[id]; if(idx!==undefined) document.querySelectorAll('.taskbar button')[idx].classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+/* subtle cursor glow */
+const glow=document.createElement('div');
+glow.style.cssText='position:fixed;width:260px;height:260px;border-radius:50%;pointer-events:none;z-index:0;background:radial-gradient(circle,rgba(255,74,24,.10),transparent 68%);transform:translate(-50%,-50%);mix-blend-mode:screen;';
+document.body.appendChild(glow);
+addEventListener('mousemove',e=>{glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px'});
+</script>
+</body>
+</html>
